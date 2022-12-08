@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A stack for deploying containerized applications in AWS Fargate.
+  This stack runs containers in a public or private VPC subnet.
+
+Mappings:
+  # The VPC and subnet configuration is passed in via the environment spec.
+  SubnetConfig:
+    VPC:
+      CIDR: "{{ environment.inputs.vpc_cidr}}"
+    Public1:
+      CIDR: "{{ environment.inputs.public_subnet_one_cidr}}"
+    Public2:
+      CIDR: "{{ environment.inputs.public_subnet_two_cidr}}"
+    Private1:
+      CIDR: "{{ environment.inputs.private_subnet_one_cidr}}"
+    Private2:
+      CIDR: "{{ environment.inputs.private_subnet_two_cidr}}"
+Conditions:
+  Never: !Equals ["A", "B"]
+
+Resources:
+  NonResource:
+    Type: Custom::NonResource
+    Condition: Never
+
+Outputs:
+  Cluster:
+    Description: The name of the ECS cluster
+    Value: "{{resolve:ssm-secure:/proton/Cluster}}"
+  ClusterArn:
+    Description: The ARN of the ECS cluster
+    Value: "{{resolve:ssm-secure:/proton/ClusterArn}}"
+  ServiceTaskDefExecutionRoleArn:
+    Description: The ARN of the ECS role
+    Value: "{{resolve:ssm-secure:/proton/ServiceTaskDefExecutionRoleArn}}"
+  SNSTopicArn:
+    Description: The name of the SNS Topic
+    Value: "{{resolve:ssm-secure:/proton/SNSTopicArn}}"
+  SNSTopicName:
+    Description: TopicName of the SNS Topic
+    Value: "{{resolve:ssm-secure:/proton/SNSTopicName}}"
+  SNSRegion:
+    Description: Region of the SNS Topic
+    Value: "{{resolve:ssm-secure:/proton/SNSRegion}}"
+  VPC:
+    Description: The ID of the VPC that this stack is deployed in
+    Value: "{{resolve:ssm-secure:/proton/VPC}}"
+  PublicSubnet1:
+    Description: Public subnet one
+    Value: "{{resolve:ssm-secure:/proton/PublicSubnet1}}"
+  PublicSubnet2:
+    Description: Public subnet two
+    Value: "{{resolve:ssm-secure:/proton/PublicSubnet2}}"
+  PrivateSubnet1:
+    Description: Private subnet one
+    Value: "{{resolve:ssm-secure:/proton/PrivateSubnet1}}"
+  PrivateSubnet2:
+    Description: Private subnet two
+    Value: "{{resolve:ssm-secure:/proton/PrivateSubnet2}}"
+  CloudMapNamespaceId:
+    Description: CloudMap namespace Id
+    Value: "{{resolve:ssm-secure:/proton/CloudMapNamespaceId}}"
