@@ -2,6 +2,44 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: A stack for deploying containerized applications in AWS Fargate.
   This stack runs containers in a public or private VPC subnet.
 
+Parameters:
+  ClusterParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/Cluster"
+  ClusterArnParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/ClusterArn"
+  ServiceTaskDefExecutionRoleArnParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/ServiceTaskDefExecutionRoleArn"
+  SNSTopicArnParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/SNSTopicArn"
+  SNSTopicNameParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/SNSTopicName"
+  SNSRegionParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/SNSRegion"
+  VPCParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/VPC"
+  PublicSubnet1Parameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/PublicSubnet1"
+  PublicSubnet2Parameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/PublicSubnet2"
+  PrivateSubnet1Parameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/PrivateSubnet1"
+  PrivateSubnet2Parameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/PrivateSubnet2"
+  CloudMapNamespaceIdParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/CloudMapNamespaceId"
+
 Mappings:
   # The VPC and subnet configuration is passed in via the environment spec.
   SubnetConfig:
@@ -26,37 +64,37 @@ Resources:
 Outputs:
   Cluster:
     Description: The name of the ECS cluster
-    Value: "{{resolve:ssm:/proton/Cluster}}"
+    Value: !Ref ClusterParameter
   ClusterArn:
     Description: The ARN of the ECS cluster
-    Value: "{{resolve:ssm:/proton/ClusterArn}}"
+    Value: !Ref ClusterArnParameter
   ServiceTaskDefExecutionRoleArn:
     Description: The ARN of the ECS role
-    Value: "{{resolve:ssm:/proton/ServiceTaskDefExecutionRoleArn}}"
+    Value: !Ref ServiceTaskDefExecutionRoleArnParameter
   SNSTopicArn:
     Description: The name of the SNS Topic
-    Value: "{{resolve:ssm:/proton/SNSTopicArn}}"
+    Value: !Ref SNSTopicArnParameter
   SNSTopicName:
     Description: TopicName of the SNS Topic
-    Value: "{{resolve:ssm:/proton/SNSTopicName}}"
+    Value: !Ref SNSTopicNameParameter
   SNSRegion:
     Description: Region of the SNS Topic
-    Value: "{{resolve:ssm:/proton/SNSRegion}}"
+    Value: !Ref SNSRegionParameter
   VPC:
     Description: The ID of the VPC that this stack is deployed in
-    Value: "{{resolve:ssm:/proton/VPC}}"
+    Value: !Ref VPCParameter
   PublicSubnet1:
     Description: Public subnet one
-    Value: "{{resolve:ssm:/proton/PublicSubnet1}}"
+    Value: !Ref PublicSubnet1Parameter
   PublicSubnet2:
     Description: Public subnet two
-    Value: "{{resolve:ssm:/proton/PublicSubnet2}}"
+    Value: !Ref PublicSubnet2Parameter
   PrivateSubnet1:
     Description: Private subnet one
-    Value: "{{resolve:ssm:/proton/PrivateSubnet1}}"
+    Value: !Ref PrivateSubnet1Parameter
   PrivateSubnet2:
     Description: Private subnet two
-    Value: "{{resolve:ssm:/proton/PrivateSubnet2}}"
+    Value: !Ref PrivateSubnet2Parameter
   CloudMapNamespaceId:
     Description: CloudMap namespace Id
-    Value: "{{resolve:ssm:/proton/CloudMapNamespaceId}}"
+    Value: !Ref CloudMapNamespaceIdParameter
