@@ -1,0 +1,4 @@
+compatible_environments:
+  - fargate-env:1
+supported_component_sources:
+  - DIRECTLY_DEFINED
