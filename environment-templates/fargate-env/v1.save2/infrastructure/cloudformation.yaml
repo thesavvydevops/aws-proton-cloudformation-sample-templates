@@ -1,0 +1,100 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A stack for deploying containerized applications in AWS Fargate.
+  This stack runs containers in a public or private VPC subnet.
+
+Parameters:
+  ClusterParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/Cluster"
+  ClusterArnParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/ClusterArn"
+  ServiceTaskDefExecutionRoleArnParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/ServiceTaskDefExecutionRoleArn"
+  SNSTopicArnParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/SNSTopicArn"
+  SNSTopicNameParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/SNSTopicName"
+  SNSRegionParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/SNSRegion"
+  VPCParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/VPC"
+  PublicSubnet1Parameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/PublicSubnet1"
+  PublicSubnet2Parameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/PublicSubnet2"
+  PrivateSubnet1Parameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/PrivateSubnet1"
+  PrivateSubnet2Parameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/PrivateSubnet2"
+  CloudMapNamespaceIdParameter:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/proton/CloudMapNamespaceId"
+
+Mappings:
+  # The VPC and subnet configuration is passed in via the environment spec.
+  SubnetConfig:
+    VPC:
+      CIDR: "{{ environment.inputs.vpc_cidr}}"
+    Public1:
+      CIDR: "{{ environment.inputs.public_subnet_one_cidr}}"
+    Public2:
+      CIDR: "{{ environment.inputs.public_subnet_two_cidr}}"
+    Private1:
+      CIDR: "{{ environment.inputs.private_subnet_one_cidr}}"
+    Private2:
+      CIDR: "{{ environment.inputs.private_subnet_two_cidr}}"
+Conditions:
+  Never: !Equals ["A", "B"]
+
+Resources:
+  NonResource:
+    Type: Custom::NonResource
+    Condition: Never
+
+Outputs:
+  Cluster:
+    Description: The name of the ECS cluster
+    Value: !Ref ClusterParameter
+  ClusterArn:
+    Description: The ARN of the ECS cluster
+    Value: !Ref ClusterArnParameter
+  ServiceTaskDefExecutionRoleArn:
+    Description: The ARN of the ECS role
+    Value: !Ref ServiceTaskDefExecutionRoleArnParameter
+  SNSTopicArn:
+    Description: The name of the SNS Topic
+    Value: !Ref SNSTopicArnParameter
+  SNSTopicName:
+    Description: TopicName of the SNS Topic
+    Value: !Ref SNSTopicNameParameter
+  SNSRegion:
+    Description: Region of the SNS Topic
+    Value: !Ref SNSRegionParameter
+  VPC:
+    Description: The ID of the VPC that this stack is deployed in
+    Value: !Ref VPCParameter
+  PublicSubnet1:
+    Description: Public subnet one
+    Value: !Ref PublicSubnet1Parameter
+  PublicSubnet2:
+    Description: Public subnet two
+    Value: !Ref PublicSubnet2Parameter
+  PrivateSubnet1:
+    Description: Private subnet one
+    Value: !Ref PrivateSubnet1Parameter
+  PrivateSubnet2:
+    Description: Private subnet two
+    Value: !Ref PrivateSubnet2Parameter
+  CloudMapNamespaceId:
+    Description: CloudMap namespace Id
+    Value: !Ref CloudMapNamespaceIdParameter
