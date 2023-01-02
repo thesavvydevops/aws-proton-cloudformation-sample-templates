@@ -1,5 +1,5 @@
 ## AWS Proton Sample CloudFormation Templates
-This repository is a curated list of sample templates to use within AWS Proton that are authored for integration with AWS CloudFormation.
+..This repository is a curated list of sample templates to use within AWS Proton that are authored for integration with AWS CloudFormation.
 
 To use this repository, browse to the folder that corresponds to the template that you want to use. You will find there:
 - An architecture description of the template
